@@ -89,7 +89,7 @@ while ($device = mysql_fetch_array($device_query))
 
   echo("\n");
 
-  #include("includes/discovery/os.inc.php");
+  include("includes/discovery/os.inc.php");
 
   include("includes/discovery/ports.inc.php");
   include("includes/discovery/entity-physical.inc.php");

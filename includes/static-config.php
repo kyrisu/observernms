@@ -62,6 +62,7 @@ $os_text['procurve']     = "HP ProCurve";
 $os_text['speedtouch']   = "Thomson Speedtouch";
 $os_text['dell-laser']   = "Dell Laser Printer";
 $os_text['adva']	 = "Adva";
+$os_text['vmware-esx']	 = "VMware ESX";
 
 if(!$config['graph_colours']['greens']) {
   $config['graph_colours']['greens']  = array('B6D14B','91B13C','6D912D','48721E','24520F','003300');
