@@ -2,7 +2,7 @@
 
       if ($device['os'] == "freebsd") {
         $sysDescr = str_replace(" 0 ", " ", $sysDescr);
-        list(,,$version) = explode (" ", $sysDescr);
+        list(,,,$version) = explode (" ", $sysDescr);
         $hardware = "i386";
         $features = "GENERIC";
       } elseif ($device['os'] == "dragonfly") {
@@ -21,6 +21,10 @@
         $features = $freebsda . " " . $freebsdb;
         $hardware = "$hardware ($arch)";
         $hardware = str_replace("\"", "", $hardware);
+      } elseif ($device['os'] == "vmware-esx") {
+	list(,,$version,$build,,,$arch) = split(" ", $sysDescr);
+	$version = $version . " " . $build; 
+	if(strstr($arch, "x86_64")) { $hardware = "Generic x86 64-bit"; }
       } elseif ($device['os'] == "linux") {
         list(,,$version) = explode (" ", $sysDescr);
         if(strstr($sysDescr, "386")|| strstr($sysDescr, "486")||strstr($sysDescr, "586")||strstr($sysDescr, "686")) { $hardware = "Generic x86"; }
