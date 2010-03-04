@@ -13,7 +13,11 @@
     <select name="program" id="program">
       <option value="">All Programs</option>
       <?php
-        $query = mysql_query("SELECT `program` FROM `syslog` GROUP BY `program` ORDER BY `program`");
+        if($_SESSION['userlevel']==10)
+            $query = mysql_query("SELECT `program` FROM `syslog` GROUP BY `program` ORDER BY `program`");
+        else
+            $query = mysql_query("SELECT `program` FROM `syslog` as S, `devices_perms` as P WHERE S.device_id =
+            P.device_id AND P.user_id = ".$_SESSION['user_id']." ORDER BY `program`");
         while($data = mysql_fetch_array($query)) {
           echo("<option value='".$data['program']."'"); 
 	  if($data['program'] == $_POST['program']) { echo("selected"); }
@@ -27,7 +31,11 @@
     <select name="device" id="device">
       <option value="">All Devices</option>
       <?php
-        $query = mysql_query("SELECT * FROM `devices` ORDER BY `hostname`");
+        if($_SESSION['userlevel']==10)
+            $query = mysql_query("SELECT * FROM `devices` ORDER BY `hostname`");
+        else
+            $query = mysql_query("SELECT * FROM `devices` as D, `devices_perms` as P WHERE D.device_id = P.device_id and
+            P.user_id = ". $_SESSION['user_id'] ." ORDER BY `hostname`");
         while($data = mysql_fetch_array($query)) {
           echo("<option value='".$data['device_id']."'");
 

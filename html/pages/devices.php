@@ -10,7 +10,11 @@
         <select name='os' id='os'>
           <option value=''>All OSes</option>
           <?php
-            $query = mysql_query("SELECT `os` FROM `devices` GROUP BY `os` ORDER BY `os`");
+            if($_SESSION['userlevel'] == '10')
+                $query = mysql_query("SELECT `os` FROM `devices` GROUP BY `os` ORDER BY `os`");
+            else
+                $query = mysql_query("SELECT `os` FROM `devices` AS D, `devices_perms` AS P WHERE D.device_id =
+                P.device_id AND P.user_id = ".$_SESSION['user_id']." GROUP BY `os` ORDER BY `os`");
             while ($data = mysql_fetch_array($query)) 
             {
               if ($data['os'])
@@ -26,7 +30,12 @@
         <select name='version' id='version'>
           <option value=''>All Versions</option>
           <?php
-            $query = mysql_query("SELECT `version` FROM `devices` GROUP BY `version` ORDER BY `version`");
+            if($_SESSION['userlevel'] == '10')
+                $query = mysql_query("SELECT `version` FROM `devices` GROUP BY `version` ORDER BY `version`");
+            else
+                $query = mysql_query("SELECT `version` FROM `devices` AS D, `devices_perms` AS P WHERE D.device_id =
+                P.device_id AND P.user_id = ".$_SESSION['user_id']." GROUP BY `version` ORDER BY `version`");
+
             while ($data = mysql_fetch_array($query)) 
             {
               if ($data['version'])
@@ -42,8 +51,13 @@
       <td width="200">
         <select name="hardware" id="hardware">
           <option value="">All Platforms</option>
-          <?php
-            $query = mysql_query("SELECT `hardware` FROM `devices` GROUP BY `hardware` ORDER BY `hardware`");
+          <?php 
+            if($_SESSION['userlevel'] == '10')
+                $query = mysql_query("SELECT `hardware` FROM `devices` GROUP BY `hardware` ORDER BY `hardware`");
+            else
+                $query = mysql_query("SELECT `hardware` FROM `devices` AS D, `devices_perms` AS P WHERE D.device_id =
+                P.device_id AND P.user_id = ".$_SESSION['user_id']." GROUP BY `hardware` ORDER BY `hardware`");
+
             while ($data = mysql_fetch_array($query)) 
             {
               if ($data['hardware'])
@@ -59,7 +73,12 @@
         <select name="features" id="features">
           <option value="">All Featuresets</option>
           <?php
-            $query = mysql_query("SELECT `features` FROM `devices` GROUP BY `features` ORDER BY `features`");
+            if($_SESSION['userlevel'] == '10')
+                $query = mysql_query("SELECT `features` FROM `devices` GROUP BY `features` ORDER BY `features`");
+            else
+                $query = mysql_query("SELECT `features` FROM `devices` AS D, `devices_perms` AS P WHERE D.device_id =
+                P.device_id AND P.user_id = ".$_SESSION['user_id']." GROUP BY `features` ORDER BY `features`");
+
             while ($data = mysql_fetch_array($query)) 
             {
               if ($data['features'])
@@ -76,7 +95,12 @@
         <select name="location" id="location">
           <option value="">All Locations</option>
           <?php
-            $query = mysql_query("SELECT `location` FROM `devices` GROUP BY `location` ORDER BY `location`");
+            if($_SESSION['userlevel'] == '10')
+                $query = mysql_query("SELECT `location` FROM `devices` GROUP BY `location` ORDER BY `location`");
+            else
+                $query = mysql_query("SELECT `location` FROM `devices` AS D, `devices_perms` AS P WHERE D.device_id =
+                P.device_id AND P.user_id = ".$_SESSION['user_id']." GROUP BY `location` ORDER BY `location`");
+
             while ($data = mysql_fetch_array($query)) 
             {
               if ($data['location'])

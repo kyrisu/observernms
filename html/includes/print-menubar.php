@@ -9,6 +9,8 @@
 
   $query_a = mysql_query("SELECT * FROM `devices`");
   while($device = mysql_fetch_array($query_a)) {
+    if($_SESSION['userlevel'] != '10' && !mysql_result(mysql_query("SELECT count(*) FROM `devices_perms` WHERE device_id = '".$device['device_id']."' AND
+    `user_id` = '".$_SESSION['user_id']."'"),0)) continue; 
     $this_alert = 0;
     if ($device['status'] == 0 && $device['ignore'] == '0') { $this_alert = "1"; } elseif ($device['ignore'] == '0') {
       if (mysql_result(mysql_query("SELECT count(service_id) FROM services WHERE service_status = '0' AND device_id = '".$device['device_id']."'"),0)) { $this_alert = "1"; }
