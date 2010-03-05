@@ -24,6 +24,7 @@ if($device['type'] == 'network') { $network_select = "selected"; }
 if($device['type'] == 'firewall') { $firewall_select = "selected"; }
 if($device['type'] == 'workstation') { $workstation_select = "selected"; }
 if($device['type'] == 'printer') { $printer_select = "selected"; }
+if($device['type'] == 'voip' ) { $voip_select = "selected";}
 if($device['type'] == 'other' || $device['type'] == 'unknown') { $other_select = "selected"; }
 
 echo("<table cellpadding=0 cellspacing=0><tr><td>
@@ -64,6 +65,7 @@ echo("<table cellpadding=0 cellspacing=0><tr><td>
           <option value='firewall' $firewall_select>Firewall</option>
           <option value='workstation' $workstation_select>Workstation</option>
           <option value='printer' $printer_select>Printer</option>
+          <option value='voip' $voip_select>VOIP</option>
           <option value='other' $other_select>Other</option>
         </select>
       </td>

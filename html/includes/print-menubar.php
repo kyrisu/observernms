@@ -51,6 +51,15 @@
         <li><a href="devices/network/"><img src="images/16/arrow_switch.png" border="0" align="absmiddle" /> Network</a></li>
         <li><a href="devices/firewall/"><img src="images/16/shield.png" border="0" align="absmiddle" /> Firewalls</a></li>
 <?php
+if (isset($config['show_voip']) && $config['show_voip'])
+{
+?>
+        <li><a href="devices/voip/"><img src="images/16/voip.png" border="0" align="absmiddle" /> VOIP</a></li>
+<?php
+}
+?>
+
+<?php
 if (isset($config['enable_printers']) && $config['enable_printers'])
 {
 ?>
