@@ -46,6 +46,10 @@ echo("<table cellpadding=0 cellspacing=0><tr><td>
       <td colspan='3'><input name='descr' size='32' value='" . $device['purpose'] . "'></input></td>
     </tr>
     <tr>
+      <td><div align='right'>Web interface</div></td>
+      <td colspan='3'><input name='mgmnt_link' size='32' value='" . $device['mgmnt_link'] . "'></input></td>
+    </tr>
+    <tr>
       <td width='300'><div align='right'>SNMP Community</div></td>
       <td colspan='3'><input name='community' size='20' value='" . $device['community'] . "'></input>
         <select name='snmpver'>

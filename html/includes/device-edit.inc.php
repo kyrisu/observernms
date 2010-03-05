@@ -6,10 +6,12 @@
   $disabled = $_POST['disabled'];
   $community = $_POST['community'];
   $snmpver = $_POST['snmpver'];
+  $mgmnt_link = $_POST['mgmnt_link'];
 
 #FIXME needs more sanity checking!
   $sql = "UPDATE `devices` SET `purpose` = '" . mysql_escape_string($descr) . "', `community` = '" . mysql_escape_string($community) . "', `type` = '$type'";
-  $sql .= ", `snmpver` = '" . mysql_escape_string($snmpver) . "', `ignore` = '$ignore',  `disabled` = '$disabled' WHERE `device_id` = '$_GET[id]'";
+  $sql .= ", `snmpver` = '" . mysql_escape_string($snmpver) . "', `ignore` = '$ignore',  `disabled` = '$disabled',
+  `mgmnt_link` = '$mgmnt_link' WHERE `device_id` = '$_GET[id]'";
   $query = mysql_query($sql);
 
   $rows_updated = mysql_affected_rows();

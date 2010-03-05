@@ -315,6 +315,15 @@ function generatedevicelink($device, $text=0, $start=0, $end=0)
   return $link;
 }
 
+function generatedevicemgmntlink($device)
+{
+ 
+  if($device['mgmnt_link']!="")
+    $link =  "<a href=\"" . htmlspecialchars($device['mgmnt_link']) . "\" border=\"0\"><img src=\"images/16/mgmnt_console.png\" alt=\"Web Interface\"></a>";
+  else
+    $link = "";
+  return $link;
+}
 
 function device_traffic_image($device, $width, $height, $from, $to) 
 {
