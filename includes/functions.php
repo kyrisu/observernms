@@ -319,7 +319,7 @@ function generatedevicemgmntlink($device)
 {
  
   if($device['mgmnt_link']!="")
-    $link =  "<a href=\"" . htmlspecialchars($device['mgmnt_link']) . "\" border=\"0\"><img src=\"images/16/mgmnt_console.png\" alt=\"Web Interface\"></a>";
+    $link =  "<a href=\"" . htmlspecialchars($device['mgmnt_link']) . "\" border=\"0\" target=\"_blank\"><img src=\"images/16/link.png\" alt=\"Web Interface\"></a>";
   else
     $link = "";
   return $link;
