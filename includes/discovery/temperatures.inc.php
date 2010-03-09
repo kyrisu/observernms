@@ -233,7 +233,7 @@ if ($device['os'] == "linux")
 ## Sensors Temperatures
 if ($device['os'] == "linux") 
 {
-  $oids = shell_exec($config['snmpwalk'] . " -$snmpver -CI -Osqn -c $community $hostname:$port NET-SNMP-EXTEND-MIB::nsExtendOutLine.\"sensor\"");
+  $oids = shell_exec($config['snmpwalk'] . " -$snmpver -CI -Osqn -c $community $hostname:$port NET-SNMP-EXTEND-MIB::nsExtendOutLine.\\\"sensor\\\"");
   if ($debug) { echo($oids."\n"); }
   $oids = trim($oids);
   if ($oids) echo("SENSORS ");
@@ -245,10 +245,12 @@ if ($device['os'] == "linux")
       list($oid,$descr) = explode(" ", $data,2);
       $split_oid = explode('.',$oid);
       $temp_id = $split_oid[count($split_oid)-1];
-      $temp_oid  = "NET-SNMP-EXTEND-MIB::nsExtendOutLine.\"sensor\".$temp_id";
-      $temp  = trim(shell_exec($config['snmpget'] . " -O qv -$snmpver -c $community $hostname:$port $temp_oid")) / 1000;
-      preg_match("/=\sSTRING:\sS: (\d+) C: ([\d.]+) F: ([\d.]+)/", $desc, $group);
-      $descr = $group[1];
+      $temp_oid  = "NET-SNMP-EXTEND-MIB::nsExtendOutLine.\\\"sensor\\\".$temp_id";
+      $temp  = trim(shell_exec($config['snmpget'] . " -O qv -$snmpver -c $community $hostname:$port $temp_oid"));
+      preg_match('/S: (?P<sid>\d+) C: (?P<temp>[\d.]+) F: ([\d.]+)/', $descr, $group);
+      $descr = $group['sid'];
+      $temp = $group['temp'];
+      
       if (mysql_result(mysql_query("SELECT count(temp_id) FROM `temperature` WHERE temp_oid = '$temp_oid' AND device_id = '$id'"),0) == '0') 
       {
         $query = "INSERT INTO temperature (`device_id`, `temp_oid`, `temp_descr`, `temp_precision`, `temp_limit`, `temp_current`) values ('$id', '$temp_oid', '$descr',1000, " . ($config['defaults']['temp_limit'] ? $config['defaults']['temp_limit'] : '60') . ", '$temp')";
@@ -352,7 +354,7 @@ if ($query = mysql_query($sql))
     $i = 0;
     while ($i < count($temp_exists) && !$exists) 
     {
-      $thistemp = $sensor['device_id'] . " " . $sensor['temp_oid'];
+      $thistemp = $sensor['device_id'] . " " . addslashes($sensor['temp_oid']);
       if ($temp_exists[$i] == $thistemp) { $exists = 1; }
       $i++;
     }
