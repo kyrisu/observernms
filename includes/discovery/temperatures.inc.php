@@ -230,6 +230,44 @@ if ($device['os'] == "linux")
   }
 }
 
+## Sensors Temperatures
+if ($device['os'] == "linux") 
+{
+  $oids = shell_exec($config['snmpwalk'] . " -$snmpver -CI -Osqn -c $community $hostname:$port NET-SNMP-EXTEND-MIB::nsExtendOutLine.\"sensor\"");
+  if ($debug) { echo($oids."\n"); }
+  $oids = trim($oids);
+  if ($oids) echo("SENSORS ");
+  foreach(explode("\n", $oids) as $data) 
+  {
+    $data = trim($data);
+    if ($data) 
+    {
+      list($oid,$descr) = explode(" ", $data,2);
+      $split_oid = explode('.',$oid);
+      $temp_id = $split_oid[count($split_oid)-1];
+      $temp_oid  = "NET-SNMP-EXTEND-MIB::nsExtendOutLine.\"sensor\".$temp_id";
+      $temp  = trim(shell_exec($config['snmpget'] . " -O qv -$snmpver -c $community $hostname:$port $temp_oid")) / 1000;
+      preg_match("/=\sSTRING:\sS: (\d+) C: ([\d.]+) F: ([\d.]+)/", $desc, $group);
+      $descr = $group[1];
+      if (mysql_result(mysql_query("SELECT count(temp_id) FROM `temperature` WHERE temp_oid = '$temp_oid' AND device_id = '$id'"),0) == '0') 
+      {
+        $query = "INSERT INTO temperature (`device_id`, `temp_oid`, `temp_descr`, `temp_precision`, `temp_limit`, `temp_current`) values ('$id', '$temp_oid', '$descr',1000, " . ($config['defaults']['temp_limit'] ? $config['defaults']['temp_limit'] : '60') . ", '$temp')";
+        mysql_query($query);
+        echo("+");
+      } 
+      elseif (mysql_result(mysql_query("SELECT `temp_descr` FROM temperature WHERE `device_id` = '$id' AND `temp_oid` = '$temp_oid'"), 0) != $descr) 
+      {
+        echo("U");
+        mysql_query("UPDATE temperature SET `temp_descr` = '$descr' WHERE `device_id` = '$id' AND `temp_oid` = '$temp_oid'");
+      } 
+      else 
+      {
+        echo("."); 
+      } 
+      $temp_exists[] = "$id $temp_oid";
+    }
+  }
+}
 ## Supermicro Temperatures
 if ($device['os'] == "linux") 
 {
