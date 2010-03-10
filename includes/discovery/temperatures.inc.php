@@ -237,6 +237,7 @@ if ($device['os'] == "linux")
   if ($debug) { echo($oids."\n"); }
   $oids = trim($oids);
   if ($oids) echo("SENSORS ");
+  $sensorId = 1;
   foreach(explode("\n", $oids) as $data) 
   {
     $data = trim($data);
@@ -247,13 +248,12 @@ if ($device['os'] == "linux")
       $temp_id = $split_oid[count($split_oid)-1];
       $temp_oid  = "NET-SNMP-EXTEND-MIB::nsExtendOutLine.\\\"sensor\\\".$temp_id";
       $temp  = trim(shell_exec($config['snmpget'] . " -O qv -$snmpver -c $community $hostname:$port $temp_oid"));
-      preg_match('/S: (?P<sid>\d+) C: (?P<temp>[\d.]+) F: ([\d.]+)/', $descr, $group);
-      $descr = $group['sid'];
-      $temp = $group['temp'];
-      
+      $descr = "Sensor " . $sensorId;
+      $sensorId++;
+      $temp_oid = mysql_real_escape_string($temp_oid);
       if (mysql_result(mysql_query("SELECT count(temp_id) FROM `temperature` WHERE temp_oid = '$temp_oid' AND device_id = '$id'"),0) == '0') 
       {
-        $query = "INSERT INTO temperature (`device_id`, `temp_oid`, `temp_descr`, `temp_precision`, `temp_limit`, `temp_current`) values ('$id', '$temp_oid', '$descr',1000, " . ($config['defaults']['temp_limit'] ? $config['defaults']['temp_limit'] : '60') . ", '$temp')";
+        $query = "INSERT INTO temperature (`device_id`, `temp_oid`, `temp_descr`, `temp_precision`, `temp_limit`, `temp_current`) values ('$id', '$temp_oid', '$descr', 1, " . ($config['defaults']['temp_limit'] ? $config['defaults']['temp_limit'] : '60') . ", '$temp')";
         mysql_query($query);
         echo("+");
       } 

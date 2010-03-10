@@ -4,14 +4,16 @@ if($_SESSION['userlevel'] < '7') {
   print_error("Insufficient Privileges");
 } else {
 
-if($_POST['editing']) {
-  if($_SESSION['userlevel'] > "7") {
+if($_POST['editing'] || $_POST['sediting']) {
+  if($_SESSION['userlevel'] > "5") {
     include("includes/device-edit.inc.php");
   }
 }
 
 $device = mysql_fetch_array(mysql_query("SELECT * FROM `devices` WHERE `device_id` = '$_GET[id]'"));
 $descr  = $device['purpose'];
+
+$squery = mysql_query("SELECT * FROM `temperature` WHERE `device_id` = '$_GET[id]'");
 
 if($updated && $update_message) { 
   print_message($update_message); 
@@ -39,7 +41,7 @@ echo("<table cellpadding=0 cellspacing=0><tr><td>
 </h5>
 
 <form id='edit' name='edit' method='post' action=''>
-  <input type=hidden name='editing' value='yes'>
+  <input type=hidden name='editing' value='yes'/>
   <table width='400' border='0'>
     <tr>
       <td><div align='right'>Description</div></td>
@@ -90,6 +92,27 @@ echo("
   <input type='submit' name='Submit' value='Save' />
   <label><br />
   </label>
+</form>
+
+<hr/>
+<h4>Sensors</h4>
+
+<form id='edit' name='edit' method='post' action=''>
+  <input type=hidden name='sediting' value='yes'/>
+  <table width='400' border='0'> ");
+while($sensor = mysql_fetch_array($squery)){
+  echo("
+    <tr>
+      <td width='300'><div align='right'>". $sensor['temp_descr'] ."</div></td>
+      <td><input name='user_descr".$sensor['temp_id']."' size='32' value='" . $sensor['user_descr'] . "'></input></td>
+    </tr> ");
+}
+echo("
+  </table>
+  <input type='submit' name='Submit' value='Save' />
+  <label><br />
+  </label>
+
 </form>
 
 </td>

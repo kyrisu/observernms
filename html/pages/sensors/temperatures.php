@@ -28,7 +28,7 @@ while($temp = mysql_fetch_array($query))
 
   $weekly_temp  = "graph.php?id=" . $temp['temp_id'] . "&amp;type=temperature&amp;from=$week&amp;to=$now&amp;width=500&amp;height=150";
   $temp_popup = "<a onmouseover=\"return overlib('<img src=\'$weekly_temp\'>', LEFT);\" onmouseout=\"return nd();\">
-        " . $temp['temp_descr'] . "</a>";
+        " . (empty($temp['user_descr']) ? $temp['temp_descr'] : $temp['user_descr']) . "</a>";
 
   $temp_perc = $temp['temp_current'] / $temp['temp_limit'] * 100;
   $temp_colour = percent_colour($temp_perc);
@@ -41,7 +41,7 @@ while($temp = mysql_fetch_array($query))
   $temp_year   = "graph.php?id=" . $temp['temp_id'] . "&amp;type=temperature&amp;from=$year&amp;to=$now&amp;width=300&amp;height=100";
 
   $temp_minigraph = "<img src='graph.php?id=" . $temp['temp_id'] . "&amp;type=temperature&amp;from=$day&amp;to=$now&amp;width=100&amp;height=20'";
-  $temp_minigraph .= " onmouseover=\"return overlib('<div class=list-large>".$temp['hostname']." - ".$temp['temp_descr'];
+  $temp_minigraph .= " onmouseover=\"return overlib('<div class=list-large>".$temp['hostname']." - ".(empty($temp['user_descr']) ? $temp['temp_descr'] : $temp['user_descr']);
   $temp_minigraph .= "</div><div style=\'width: 750px\'><img src=\'$temp_day\'><img src=\'$temp_week\'><img src=\'$temp_month\'><img src=\'$temp_year\'></div>', RIGHT".$config['overlib_defaults'].");\" onmouseout=\"return nd();\" >";
 
   echo("<tr bgcolor=$row_colour>

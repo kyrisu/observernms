@@ -6,3 +6,4 @@ DROP TABLE `cpmCPU`;
 DROP TABLE `cmpMemPool`;
 ALTER TABLE `mempools` CHANGE `mempool_used` `mempool_used` INT( 16 ) NOT NULL ,CHANGE `mempool_free` `mempool_free` INT( 16 ) NOT NULL ,CHANGE `mempool_total` `mempool_total` INT( 16 ) NOT NULL ,CHANGE `mempool_largestfree` `mempool_largestfree` INT( 16 ) NULL DEFAULT NULL ,CHANGE `mempool_lowestfree` `mempool_lowestfree` INT( 16 ) NULL DEFAULT NULL ;
 ALTER TABLE `devices` ADD `mgmnt_link` text NULL DEFAULT NULL AFTER `type`;
+ALTER TABLE `temperature` ADD `user_descr` varchar(32) NULL AFTER `temp_descr`;

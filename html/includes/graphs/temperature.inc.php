@@ -12,7 +12,7 @@ include("common.inc.php");
 
   $hostname = mysql_result(mysql_query("SELECT hostname FROM devices WHERE device_id = '" . $temperature['device_id'] . "'"),0);
 
-  $temperature['temp_descr_fixed'] = substr(str_pad($temperature['temp_descr'], 28),0,28);
+  $temperature['temp_descr_fixed'] = substr(str_pad((empty($temperature['user_descr']) ? $temperature['temp_descr'] : $temperature['user_descr']), 28),0,28);
 
   $rrd_filename  = $config['rrd_dir'] . "/".$hostname."/" . safename("temp-" . $temperature['temp_descr'] . ".rrd");
 
