@@ -25,14 +25,14 @@ if(mysql_result(mysql_query("SELECT count(temp_id) from temperature WHERE device
     $temp_minigraph = "<img src='graph.php?id=" . $temp['temp_id'] . "&type=temperature&from=$day&to=$now&width=80&height=20&bg=$graph_colour' align='absmiddle'>";
 
     $temp_link  = "<a href='/device/".$device['device_id']."/health/temperatures/' onmouseover=\"return ";
-    $temp_link .= "overlib('<div class=list-large>".$device['hostname']." - ".$temp['temp_descr'];
+    $temp_link .= "overlib('<div class=list-large>".$device['hostname']." - ".(empty($temp['user_descr']) ? $temp['temp_descr'] : $temp['user_descr']);
     $temp_link .= "</div><div style=\'width: 750px\'><img src=\'$temp_day\'><img src=\'$temp_week\'><img src=\'$temp_month\'><img src=\'$temp_year\'></div>', RIGHT".$config['overlib_defaults'].");\" onmouseout=\"return nd();\" >";
 
     $temp_link_c = $temp_link . "<span style='color: $temp_colour'>" . round($temp['temp_current'],0) . "&deg;C</span></a>";
     $temp_link_b = $temp_link . $temp_minigraph . "</a>";
-    $temp_link_a = $temp_link . $temp['temp_descr'] . "</a>";
+    $temp_link_a = $temp_link . (empty($temp['user_descr']) ? $temp['temp_descr'] : $temp['user_descr']) . "</a>";
 
-    $temp['temp_descr'] = truncate($temp['temp_descr'], 25, '');
+    $temp['temp_descr'] = truncate((empty($temp['user_descr']) ? $temp['temp_descr'] : $temp['user_descr']), 25, '');
     echo("<tr bgcolor='$row_colour'><td class=tablehead><strong>$temp_link_a</strong></td><td width=80 align=right class=tablehead>$temp_link_b<td width=35 align=right class=tablehead>$temp_link_c</td></tr>");
     if($i == $rows) { echo("</table></td><td valign=top><table width=100% cellspacing=0 cellpadding=2>"); }
     $i++;
